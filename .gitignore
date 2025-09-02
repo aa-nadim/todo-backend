@@ -5,3 +5,11 @@ api/__pycache__/
 worker/venv/
 worker/__pycache__/
 .DS_Store
+.env.aws
+.env.local
+.env.production
+.flake8
+
+nginx/certs/server.crt
+nginx/certs/server.key
+

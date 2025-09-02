@@ -23,7 +23,13 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
-CORS(app)
+#CORS(app)
+CORS(app, origins=[
+    "http://d147jtqmxo6jku.cloudfront.net",
+    "https://d147jtqmxo6jku.cloudfront.net",
+    "http://localhost:3000",
+    "http://192.168.5.110:3000"
+], supports_credentials=True)
 
 # Enable debug mode
 app.debug = True

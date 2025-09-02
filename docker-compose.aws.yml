@@ -1,5 +1,4 @@
 version: '3.8'
-
 services:
   api:
     build:
@@ -7,10 +6,9 @@ services:
       dockerfile: Dockerfile
     env_file:
       - .env.aws
-    ports:
-      - "3001:3001"    # external API port (public)
+    # No external ports - nginx handles all external traffic
     volumes:
-      - ./api:/app     # optional for live editing; remove for stricter prod
+      - ./api:/app     
     networks:
       - todo-network
     depends_on:
@@ -36,6 +34,20 @@ services:
       - postgres
       - redis
       - elasticmq
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "3001:443"       # Map external 3001 to internal 443 (HTTPS)
+      - "3000:80"        # Optional: HTTP redirect port
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/certs:/etc/nginx/certs:ro  # Mount SSL certificates
+    depends_on:
+      - api
+    networks:
+      - todo-network
     restart: unless-stopped
 
   postgres:
